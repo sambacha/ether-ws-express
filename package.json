@@ -1,0 +1,20 @@
+{
+  "name": "ether-ws-express",
+  "version": "0.1.0",
+ "private": true,
+  "description": "ethereum websocket express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sambacha/ether-ws-express.git"
+  },
+  "author": "sam",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/sambacha/ether-ws-express/issues"
+  },
+  "homepage": "https://github.com/sambacha/ether-ws-express#readme"
+}
