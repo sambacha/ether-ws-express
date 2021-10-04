@@ -20,7 +20,7 @@ class RequestWrapper {
   }
 
   getQuery() {
-    const idx = this.req.originalUrl.indexOf("?");
+    const idx = this.req.originalUrl.indexOf('?');
     return this.req.originalUrl.substr(idx + 1);
   }
 

@@ -81,6 +81,6 @@ module.exports = function expressWs(app, httpServer, options = {}) {
     },
     applyTo: function applyTo(router) {
       addWsMethod(router);
-    }
+    },
   };
-}
+};

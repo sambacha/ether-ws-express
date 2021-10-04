@@ -14,4 +14,4 @@ module.exports = function wrapMiddleware(middleware) {
       next();
     }
   };
-}
+};

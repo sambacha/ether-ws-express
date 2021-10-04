@@ -1,10 +1,10 @@
-const http = require("http");
-const express = require("express");
-const expressWs = require("./express-ws");
-const WebSocketWrapper = require("./websocket-wrapper");
-const RequestWrapper = require("./request-wrapper");
-const ResponseWrapper = require("./response-wrapper");
-const raw = require("body-parser").raw;
+const http = require('http');
+const express = require('express');
+const expressWs = require('./express-ws');
+const WebSocketWrapper = require('./websocket-wrapper');
+const RequestWrapper = require('./request-wrapper');
+const ResponseWrapper = require('./response-wrapper');
+const raw = require('body-parser').raw;
 
 class TemplatedApp {
   constructor(options) {
@@ -12,9 +12,11 @@ class TemplatedApp {
 
     this.expressApp = express();
     this.httpServer = http.createServer(this.expressApp);
-    this.expressApp.use(raw({
-      type: "application/json"
-    }));
+    this.expressApp.use(
+      raw({
+        type: 'application/json',
+      })
+    );
     this.wsServer = null;
   }
 
@@ -23,9 +25,9 @@ class TemplatedApp {
     let host;
     let port;
     let options;
-    if (typeof hostOrPort === "number") {
+    if (typeof hostOrPort === 'number') {
       port = hostOrPort;
-      if (typeof portOptionsOrCb === "function") {
+      if (typeof portOptionsOrCb === 'function') {
         cb = portOptionsOrCb;
       } else {
         options = portOptionsOrCb;
@@ -36,7 +38,7 @@ class TemplatedApp {
     }
 
     if (!host) {
-      host = "127.0.0.1";
+      host = '127.0.0.1';
     }
 
     // options can be 0 to do the default or 1 to not share the port
@@ -44,11 +46,11 @@ class TemplatedApp {
 
     try {
       this.httpServer.listen(port, host, () => {
-        if (cb && typeof cb === "function") {
+        if (cb && typeof cb === 'function') {
           cb(this.httpServer);
         }
       });
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
 
@@ -137,26 +139,26 @@ class TemplatedApp {
 
   /** Registers a handler matching specified URL pattern where WebSocket upgrade requests are caught. */
   ws(pattern, behavior) {
-    if (typeof this.expressApp.ws !== "function") {
+    if (typeof this.expressApp.ws !== 'function') {
       expressWs(this.expressApp, this.httpServer);
     }
 
     this.expressApp.ws(pattern, (ws, req) => {
       const wrappedWebsocket = new WebSocketWrapper(ws);
 
-      if (typeof behavior.open === "function") {
+      if (typeof behavior.open === 'function') {
         behavior.open(wrappedWebsocket);
       }
 
-      ws.on("upgrade", (req) => {
-        if (typeof behavior.upgrade === "function") {
+      ws.on('upgrade', (req) => {
+        if (typeof behavior.upgrade === 'function') {
           behavior.upgrade(null, req, {});
         }
       });
 
-      ws.on("message", message => {
-        if (typeof behavior.message === "function") {
-          if (typeof message === "string") {
+      ws.on('message', (message) => {
+        if (typeof behavior.message === 'function') {
+          if (typeof message === 'string') {
             const buf = new ArrayBuffer(message.length);
             const bufView = new Uint8Array(buf);
             for (let i = 0; i < message.length; i++) {
@@ -164,7 +166,7 @@ class TemplatedApp {
             }
             behavior.message(wrappedWebsocket, buf, false);
           } else if (Buffer.isBuffer(message)) {
-            const buf = (new Uint8Array(message)).buffer;
+            const buf = new Uint8Array(message).buffer;
             behavior.message(wrappedWebsocket, buf, true);
           } else if (Array.isArray(message)) {
             // array of buffers. do nothing?
@@ -177,8 +179,8 @@ class TemplatedApp {
       // there is no "drain" event for `ws`
       // this currently isn't used by ganache so moving along
 
-      ws.on("close", (code, reason) => {
-        if (typeof behavior.close === "function") {
+      ws.on('close', (code, reason) => {
+        if (typeof behavior.close === 'function') {
           const buf = new ArrayBuffer(reason.length);
           const bufView = new Uint8Array(buf);
           for (let i = 0; i < reason.length; i++) {
@@ -188,14 +190,14 @@ class TemplatedApp {
         }
       });
 
-      ws.on("ping", data => {
-        if (typeof behavior.ping === "function") {
+      ws.on('ping', (data) => {
+        if (typeof behavior.ping === 'function') {
           behavior.ping(wrappedWebsocket);
         }
       });
 
-      ws.on("pong", data => {
-        if (typeof behavior.pong === "function") {
+      ws.on('pong', (data) => {
+        if (typeof behavior.pong === 'function') {
           behavior.pong(wrappedWebsocket);
         }
       });
@@ -210,7 +212,6 @@ class TemplatedApp {
   publish(topic, message, isBinary, compress) {
     return this;
   }
-
 }
 
 module.exports = TemplatedApp;

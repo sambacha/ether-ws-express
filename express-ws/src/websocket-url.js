@@ -8,4 +8,4 @@ module.exports = function websocketUrl(url) {
     return `${trailingSlash(baseUrl)}.websocket?${query}`;
   }
   return `${trailingSlash(url)}.websocket`;
-}
+};

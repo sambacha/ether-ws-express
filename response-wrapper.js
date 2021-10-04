@@ -22,7 +22,7 @@ class ResponseWrapper {
   }
 
   end(body) {
-    if (typeof body !== "undefined") {
+    if (typeof body !== 'undefined') {
       this.res.send(body);
     } else {
       this.res.end();

@@ -4,4 +4,4 @@ module.exports = function addTrailingSlash(string) {
     suffixed = `${suffixed}/`;
   }
   return suffixed;
-}
+};
